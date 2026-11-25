@@ -39,9 +39,10 @@ card.addEventListener('mouseleave', () => { card.hidden = true; cardFor = null; 
 
 /* ---------- the city ---------- */
 const cityRoot = $('#city');
-let city = null;
+let city = null, entering = false;
 async function enterCity(id) {
-  if (!cityRoot.hidden) return;
+  if (entering || !cityRoot.hidden) return;
+  entering = true;
   card.hidden = true;
   $('#hint').classList.remove('show');
   if (location.hash !== '#/' + id) history.pushState(null, '', '#/' + id);
@@ -58,6 +59,7 @@ async function enterCity(id) {
   requestAnimationFrame(() => cityRoot.classList.add('open'));
   document.body.classList.add('in-city');
   cityRoot.querySelector('.cv-main')?.focus({ preventScroll: true });
+  entering = false;
 }
 function leaveCity() {
   if (cityRoot.hidden) return;

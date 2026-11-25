@@ -32,6 +32,7 @@ function along(pts, step) {
   return out;
 }
 
+const AOSTA_KEYS = ['stop:aosta', 'lm:arco', 'city:aosta'];
 const ease = (t) => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
 export function createMap(svg, { onCard, onHideCard, onEnter }) {
@@ -254,7 +255,7 @@ export function createMap(svg, { onCard, onHideCard, onEnter }) {
   el(seal, 'circle', { class: 'seal-wax', cx: r1(ax), cy: r1(ay + 9), r: 6.6 });
   el(seal, 'circle', { class: 'seal-ring', cx: r1(ax), cy: r1(ay + 9), r: 4.6 });
   el(seal, 'text', { class: 'seal-num', x: r1(ax), y: r1(ay + 11.6), 'text-anchor': 'middle' }, 'I');
-  seal.addEventListener('click', (e) => { if (!dragged) { e.stopPropagation(); onEnter('aosta'); } });
+  seal.addEventListener('click', (e) => { e.stopPropagation(); if (!dragged && e.pointerType !== 'touch') onEnter('aosta'); });
   seal.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onEnter('aosta'); } });
 
   // GattoMatto, at the pass first
@@ -276,10 +277,11 @@ export function createMap(svg, { onCard, onHideCard, onEnter }) {
   const view = { x: 0, y: 0, w: W, h: H };
   const ITALY = { x: 360, y: 50, w: 880, h: 1150 };
   let lampR = 120;
-  function aspect() { return svg.clientWidth / Math.max(1, svg.clientHeight); }
+  const box = () => svg.getBoundingClientRect();
+  function aspect() { const r = box(); return Math.max(1, r.width) / Math.max(1, r.height); }
   function apply() {
     svg.setAttribute('viewBox', `${r1(view.x)} ${r1(view.y)} ${r1(view.w)} ${r1(view.h)}`);
-    const px = view.w / Math.max(1, svg.clientWidth);
+    const px = view.w / Math.max(1, box().width);
     lampR = 150 * px;
     lamp.setAttribute('r', r1(lampR));
     svg.style.setProperty('--px', px);
@@ -336,12 +338,11 @@ export function createMap(svg, { onCard, onHideCard, onEnter }) {
   }, { passive: false });
 
   const ptrs = new Map();
-  let dragged = false, startDist = 0, startW = 0, last = null;
+  let dragged = false, startDist = 0, startW = 0, last = null, downAt = null;
   svg.addEventListener('pointerdown', (e) => {
     ptrs.set(e.pointerId, [e.clientX, e.clientY]);
-    svg.setPointerCapture(e.pointerId);
     cancelAnimationFrame(anim);
-    dragged = false;
+    dragged = false; downAt = [e.clientX, e.clientY];
     last = [e.clientX, e.clientY];
     if (ptrs.size === 2) { const [a, b] = [...ptrs.values()]; startDist = Math.hypot(a[0] - b[0], a[1] - b[1]); startW = view.w; }
     if (e.pointerType !== 'mouse') moveLamp(e.clientX, e.clientY);
@@ -359,6 +360,8 @@ export function createMap(svg, { onCard, onHideCard, onEnter }) {
       return;
     }
     const dx = e.clientX - last[0], dy = e.clientY - last[1];
+    if (!dragged && Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) < 6) return;
+    if (!svg.hasPointerCapture?.(e.pointerId)) { try { svg.setPointerCapture(e.pointerId); } catch { /* */ } }
     if (Math.abs(dx) + Math.abs(dy) > 0) {
       const r = svg.getBoundingClientRect();
       view.x -= dx / r.width * view.w; view.y -= dy / r.height * view.h;
@@ -371,15 +374,20 @@ export function createMap(svg, { onCard, onHideCard, onEnter }) {
     ptrs.delete(e.pointerId);
     svg.classList.remove('dragging');
     if (ptrs.size === 1) last = [...ptrs.values()][0];
-    if (!dragged && e.type === 'pointerup' && e.pointerType !== 'mouse') hover(e, true);
+    if (!dragged && e.type === 'pointerup' && e.pointerType !== 'mouse') {
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      const t = el?.closest?.('[data-card]');
+      if (t && AOSTA_KEYS.includes(t.dataset.card)) { onEnter('aosta'); return; }
+      hover({ target: el || svg, clientX: e.clientX, clientY: e.clientY }, true);
+    }
   };
   svg.addEventListener('pointerup', up);
   svg.addEventListener('pointercancel', up);
   svg.addEventListener('pointerleave', () => { lamp.setAttribute('cx', -999); onHideCard(); document.body.style.setProperty('--lx', '-999px'); });
   svg.addEventListener('click', (e) => {
-    if (dragged) return;
+    if (dragged || e.pointerType === 'touch' || e.pointerType === 'pen') return;
     const t = e.target.closest('[data-card]');
-    if (t && (t.dataset.card === 'stop:aosta' || t.dataset.card === 'lm:arco' || t.dataset.card === 'city:aosta')) onEnter('aosta');
+    if (t && AOSTA_KEYS.includes(t.dataset.card)) onEnter('aosta');
   });
 
   function moveLamp(cx, cy) {

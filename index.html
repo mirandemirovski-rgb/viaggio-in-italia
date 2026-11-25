@@ -15,7 +15,7 @@
 <link rel="preload" href="assets/fonts/fell.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/fell-italic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/garamond.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css?v=1">
+<link rel="stylesheet" href="assets/css/style.css?v=3">
 </head>
 <body>
 <h1 class="sr">Viaggio in Italia: un corso di italiano dal livello A1 al B1, sulla mappa d’Italia</h1>
@@ -25,6 +25,8 @@
 <div class="grain" aria-hidden="true"></div>
 
 <div id="card" class="card" role="tooltip" hidden></div>
+
+<button id="skip" class="skip">Salta l’introduzione</button>
 
 <div id="hint" class="hint" hidden>
   <p>Passa la lanterna sulla mappa: alcune cose si vedono solo alla sua luce.</p>
@@ -93,32 +95,12 @@
   <div class="sheet small">
     <button class="close" data-close aria-label="Chiudi">×</button>
     <h2 id="zaino-t">Lo zaino</h2>
-    <p class="lead">Il tuo zaino è vuoto.</p>
-    <p>The words, curiosities and seals you collect in each city wait for you here.</p>
+    <div class="zaino-body"></div>
   </div>
 </section>
 
-<section id="city" class="panel city" role="dialog" aria-modal="true" aria-labelledby="city-t" hidden>
-  <div class="sheet">
-    <button class="close" data-close aria-label="Torna alla mappa">×</button>
-    <p class="kicker">Tappa I. Livello A1</p>
-    <h2 id="city-t">Aosta</h2>
-    <p class="lead">Le porte di Aosta si aprono presto.</p>
-    <p>The lessons of Aosta are being written. GattoMatto is waiting under the Roman arch.</p>
-    <h3>Cosa ti aspetta</h3>
-    <ol class="rooms">
-      <li><b>Il codice</b>: a page in mirror writing, found in the snow.</li>
-      <li><b>La piazza</b>: explore Aosta, discover words and curiosities.</li>
-      <li><b>Al forno</b>: your first conversation, with Rina the baker.</li>
-      <li><b>Saluti e gesti</b>: ciao, buongiorno, tu or Lei.</li>
-      <li><b>Alfabeto e numeri</b>: spell your name, count from 0 to 20.</li>
-      <li><b>Grammatica</b>: essere, avere, chiamarsi.</li>
-      <li><b>La prova del custode</b>: pass it to earn the first seal.</li>
-    </ol>
-    <button class="btn" data-close>Torna alla mappa</button>
-  </div>
-</section>
+<section id="city" class="city-root" hidden></section>
 
-<script type="module" src="assets/js/main.js?v=1"></script>
+<script type="module" src="assets/js/main.js?v=3"></script>
 </body>
 </html>

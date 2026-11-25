@@ -301,9 +301,9 @@ export function createMap(svg, { onCard, onHideCard, onEnter }) {
     if (w / h < a) w = h * a; else h = w / a;
     return clamp({ x: b.x + b.w / 2 - w / 2, y: b.y + b.h / 2 - h / 2, w, h });
   }
-  let anim = null;
+  let anim = null, skipped = false;
   function animateTo(target, dur = 1400) {
-    if (reduced) { Object.assign(view, target); apply(); return Promise.resolve(); }
+    if (reduced || skipped || dur === 0) { Object.assign(view, target); apply(); return Promise.resolve(); }
     const from = { ...view };
     const t0 = performance.now();
     cancelAnimationFrame(anim);
@@ -417,11 +417,12 @@ export function createMap(svg, { onCard, onHideCard, onEnter }) {
 
   /* ---------- opening sequence ---------- */
   function walkGM(dur = 2600) {
+    if (skipped) dur = 1;
     const from = [gx, gy + 2], to = gmTarget, t0 = performance.now();
     gm.classList.add('walking');
     return new Promise(res => {
       const step = (t) => {
-        const k = reduced ? 1 : Math.min(1, (t - t0) / dur);
+        const k = reduced || skipped ? 1 : Math.min(1, (t - t0) / dur);
         const e2 = ease(k);
         const x = from[0] + (to[0] - from[0]) * e2, y = from[1] + (to[1] - from[1]) * e2 + Math.sin(k * Math.PI * 7) * .6;
         gm.setAttribute('transform', `translate(${r1(x - 12)} ${r1(y - 34.8)}) scale(.12)`);
@@ -433,7 +434,7 @@ export function createMap(svg, { onCard, onHideCard, onEnter }) {
   const aostaView = () => aspect() < 1 ? fitBox({ x: ax - 120, y: ay - 120, w: 260, h: 260 }, 1) : fitBox({ x: ax - 230, y: ay - 150, w: 560, h: 360 }, 1);
 
   async function intro(full) {
-    const wait = (ms) => new Promise(r => setTimeout(r, reduced ? 0 : ms));
+    const wait = (ms) => new Promise(r => setTimeout(r, reduced || skipped ? 0 : ms));
     Object.assign(view, fitBox(ITALY)); apply();
     if (!full || reduced) {
       svg.classList.add('ready', 's1', 's2', 's3', 's4', 's5');
@@ -459,6 +460,8 @@ export function createMap(svg, { onCard, onHideCard, onEnter }) {
 
   return {
     intro,
+    skip() { skipped = true; svg.classList.add('s1', 's2', 's3', 's4', 's5', 's6'); svg.classList.remove('intro'); },
+    setSealed() { seal.classList.add('stamped'); },
     home: () => animateTo(fitBox(ITALY), 1200),
     zoomBy: (f) => { const r = svg.getBoundingClientRect(); const v = { ...view }; const nw = v.w / f; animateTo(clamp({ x: v.x + v.w / 2 - nw / 2, y: v.y + v.h / 2 - nw / aspect() / 2, w: nw, h: nw / aspect() }), 400); },
     focusAosta: () => animateTo(aostaView(), 1200),

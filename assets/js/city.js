@@ -3,7 +3,6 @@
 import { speak, canSpeak, hasItalianVoice } from './speech.js';
 import { icon, piazzaScene, prologueScene, cityBanner, sealSVG } from './art.js';
 import { NATIONS } from './lessons/aosta.js';
-import { CONTACT_URL } from './config.js';
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const plain = (s) => String(s).replace(/\{([^{}|]+)\|[^{}]+\}/g, '$1');
@@ -482,44 +481,19 @@ export function createCity(root, L, ctx) {
   }
   function contact() {
     const sheet = modal.querySelector('.sheet');
-    if (!CONTACT_URL) {
-      sheet.innerHTML = `<p class="kicker">Il viaggio continua</p><h3>Torna presto.</h3><p class="prose">GattoMatto has already taken his seat on the stagecoach to ${esc(L.next)}. The next stop is being written: come back soon to follow him.</p><div class="bus-actions"><button class="btn" data-exit>Torna alla mappa</button></div>`;
-      sheet.querySelector('[data-exit]').addEventListener('click', () => { modal.hidden = true; ctx.onClose(); });
-      return;
-    }
-    sheet.innerHTML = `<p class="kicker">Il viaggio continua</p><h3>Ti scriviamo noi.</h3>
-      <p class="prose small">Leave your email: you will hear from us when GattoMatto arrives in ${esc(L.next)}. You can also write a message.</p>
-      <form class="contact" novalidate>
-        <label><span class="lab">Nome</span><input name="nome" maxlength="40" value="${esc(S.name || '')}" autocomplete="name"><span class="err" hidden></span></label>
-        <label><span class="lab">Email</span><input name="email" type="email" maxlength="80" autocomplete="email" placeholder="nome@esempio.it"><span class="err" hidden></span></label>
-        <label><span class="lab">Messaggio <i>optional</i></span><textarea name="messaggio" rows="3" maxlength="800"></textarea></label>
-        <label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
-        <div class="bus-actions"><button class="btn wax" type="submit">Invia</button><button class="btn" type="button" data-exit>Esci</button></div>
-        <p class="status" aria-live="polite"></p>
-      </form>`;
-    const f = sheet.querySelector('form');
+    const addr = 'ti.oohay@iksvorimednarim'.split('').reverse().join(''); // kept scrambled, never shown on the page
+    const subject = `Viaggio in Italia: voglio continuare dopo ${L.name}`;
+    const body = `Ciao!\n\nHo finito la tappa di ${L.name}${S.test ? ` (prova del custode: ${S.test.score}/${S.test.total})` : ''}.\nVoglio sapere dove andrà GattoMatto.\n\n${S.name || ''}`;
+    location.href = `mailto:${addr}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    sheet.innerHTML = `<p class="kicker">Il viaggio continua</p><h3>A presto!</h3>
+      <p class="prose small">Your email app should open with a message ready to send. If it does not open, copy the address and write from your usual email.</p>
+      <div class="bus-actions"><button class="btn" data-copy>Copia l’indirizzo</button><button class="btn" data-exit>Torna alla mappa</button></div>
+      <p class="status" aria-live="polite"></p>`;
     sheet.querySelector('[data-exit]').addEventListener('click', () => { modal.hidden = true; ctx.onClose(); });
-    const errAt = (el, m) => { const e = el.closest('label').querySelector('.err'); e.textContent = m; e.hidden = !m; };
-    f.addEventListener('input', (e) => { if (e.target.closest('label')?.querySelector('.err')) errAt(e.target, ''); });
-    f.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const nome = f.nome.value.trim(), email = f.email.value.trim();
-      let ok = true;
-      if (!nome) { errAt(f.nome, 'Write your name.'); ok = false; }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { errAt(f.email, 'Write a valid email address.'); ok = false; }
-      if (!ok) return;
-      if (f.website.value) return; // a robot filled the hidden field
-      const st = f.querySelector('.status'), btn = f.querySelector('[type=submit]');
-      btn.disabled = true; st.textContent = 'Invio in corso…';
-      try {
-        await fetch(CONTACT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ nome, email, messaggio: f.messaggio.value.trim(), citta: L.name, punteggio: S.test ? `${S.test.score}/${S.test.total}` : '' }) });
-        sheet.innerHTML = `<p class="kicker">Il viaggio continua</p><h3>Grazie, ${esc(nome)}!</h3><p class="prose">Your message is on its way. GattoMatto will write to you from ${esc(L.next)}.</p><div class="bus-actions"><button class="btn" data-exit>Torna alla mappa</button></div>`;
-        sheet.querySelector('[data-exit]').addEventListener('click', () => { modal.hidden = true; ctx.onClose(); });
-      } catch {
-        st.textContent = 'The message could not be sent. Check your connection and try again.';
-        btn.disabled = false;
-      }
+    sheet.querySelector('[data-copy]').addEventListener('click', async () => {
+      const st = sheet.querySelector('.status');
+      try { await navigator.clipboard.writeText(addr); st.textContent = 'Indirizzo copiato.'; }
+      catch { st.textContent = 'The address could not be copied. Try again.'; }
     });
   }
 

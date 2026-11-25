@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Viaggio in Italia — impara l’italiano con GattoMatto</title>
+<meta name="description" content="Un vero corso di italiano, dal livello A1 al B1, raccontato come un viaggio sulla mappa d’Italia. Ogni città è una lezione.">
+<meta name="author" content="Miran Demirovski">
+<meta name="theme-color" content="#3A2716">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mirandemirovski-rgb.github.io/viaggio-in-italia/">
+<meta property="og:title" content="Viaggio in Italia">
+<meta property="og:description" content="Impara l’italiano attraversando l’Italia, città dopo città, con GattoMatto.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/fell.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/fell-italic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/garamond.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/style.css?v=1">
+</head>
+<body>
+<h1 class="sr">Viaggio in Italia: un corso di italiano dal livello A1 al B1, sulla mappa d’Italia</h1>
+
+<svg id="map" role="img" aria-label="Antica mappa d’Italia. Il viaggio di GattoMatto comincia ad Aosta."></svg>
+<div class="lamp-light" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<div id="card" class="card" role="tooltip" hidden></div>
+
+<div id="hint" class="hint" hidden>
+  <p>Passa la lanterna sulla mappa: alcune cose si vedono solo alla sua luce.</p>
+  <p class="en">Move your lantern over the map. Some things only appear in its light. Then click Aosta to begin.</p>
+</div>
+
+<div class="hud hud-left">
+  <button class="pill" data-open="#zaino" aria-label="Zaino">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8a5 5 0 0 1 10 0v11a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2Z M9 8a3 3 0 0 1 6 0 M9 14h6"/></svg>
+    <span>Zaino</span><b id="zaino-count">0</b>
+  </button>
+  <span class="pill static" title="Sigilli">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="5"/></svg>
+    <span>Sigilli</span><b id="seal-count">0</b>
+  </span>
+</div>
+
+<div class="hud hud-right">
+  <button class="pill" data-open="#metodo">Il metodo</button>
+  <div class="zoom" role="group" aria-label="Zoom">
+    <button id="zin" aria-label="Avvicina">+</button>
+    <button id="zout" aria-label="Allontana">−</button>
+    <button id="zhome" aria-label="Tutta l’Italia">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9V5h4M19 9V5h-4M5 15v4h4M19 15v4h-4"/></svg>
+    </button>
+  </div>
+</div>
+
+<p class="credit-line">Concept and Web Design by Miran Demirovski</p>
+
+<section id="metodo" class="panel" role="dialog" aria-modal="true" aria-labelledby="metodo-t" hidden>
+  <div class="sheet">
+    <button class="close" data-close aria-label="Chiudi">×</button>
+    <h2 id="metodo-t">Il metodo</h2>
+    <p class="lead">Un vero corso di italiano. Solo, diverso.</p>
+    <p>A real Italian course, told as a journey. Each city is a complete lesson unit, built the way serious language courses are built.</p>
+
+    <h3>I livelli</h3>
+    <p>The journey follows the Common European Framework of Reference for Languages (CEFR), the standard used across Europe to describe language skills. It goes from A1 (first contact) to A2 (elementary) and B1 (independent). The North of Italy is level A1.</p>
+
+    <h3>Ogni città, una lezione</h3>
+    <ul>
+      <li>Clear goals: what you will be able to say and understand by the end.</li>
+      <li>Vocabulary in context: words you discover in the scene, with audio to hear how they sound.</li>
+      <li>Grammar step by step, in the order taught by the major coursebooks.</li>
+      <li>Dialogues, reading, listening and writing: all four skills.</li>
+      <li>Culture: what Italians say, do and eat, and why.</li>
+      <li>Exercises, and a final test before you can move on.</li>
+    </ul>
+
+    <h3>Le città-prova</h3>
+    <p>Every few stops, a test city checks everything you have learned so far, like the review units of a coursebook.</p>
+
+    <h3>Le fonti</h3>
+    <ul>
+      <li>The CEFR level descriptors of the Council of Europe.</li>
+      <li>The reference syllabi for Italian as a second language from the Italian certification bodies: CILS (Università per Stranieri di Siena), CELI (Università per Stranieri di Perugia), PLIDA (Società Dante Alighieri) and CERT.IT (Università Roma Tre).</li>
+      <li>The unit-by-unit progression of widely used coursebooks, such as <i>Nuovo Espresso</i> (ALMA Edizioni) and <i>Nuovissimo Progetto italiano</i> (Edilingua).</li>
+    </ul>
+    <p class="note">All dialogues, exercises and stories on this site are original. Viaggio in Italia is an independent project. It is not affiliated with, or endorsed by, the publishers and institutions named above.</p>
+    <p class="credit">Concept and Web Design by Miran Demirovski</p>
+  </div>
+</section>
+
+<section id="zaino" class="panel" role="dialog" aria-modal="true" aria-labelledby="zaino-t" hidden>
+  <div class="sheet small">
+    <button class="close" data-close aria-label="Chiudi">×</button>
+    <h2 id="zaino-t">Lo zaino</h2>
+    <p class="lead">Il tuo zaino è vuoto.</p>
+    <p>The words, curiosities and seals you collect in each city wait for you here.</p>
+  </div>
+</section>
+
+<section id="city" class="panel city" role="dialog" aria-modal="true" aria-labelledby="city-t" hidden>
+  <div class="sheet">
+    <button class="close" data-close aria-label="Torna alla mappa">×</button>
+    <p class="kicker">Tappa I. Livello A1</p>
+    <h2 id="city-t">Aosta</h2>
+    <p class="lead">Le porte di Aosta si aprono presto.</p>
+    <p>The lessons of Aosta are being written. GattoMatto is waiting under the Roman arch.</p>
+    <h3>Cosa ti aspetta</h3>
+    <ol class="rooms">
+      <li><b>Il codice</b>: a page in mirror writing, found in the snow.</li>
+      <li><b>La piazza</b>: explore Aosta, discover words and curiosities.</li>
+      <li><b>Al forno</b>: your first conversation, with Rina the baker.</li>
+      <li><b>Saluti e gesti</b>: ciao, buongiorno, tu or Lei.</li>
+      <li><b>Alfabeto e numeri</b>: spell your name, count from 0 to 20.</li>
+      <li><b>Grammatica</b>: essere, avere, chiamarsi.</li>
+      <li><b>La prova del custode</b>: pass it to earn the first seal.</li>
+    </ol>
+    <button class="btn" data-close>Torna alla mappa</button>
+  </div>
+</section>
+
+<script type="module" src="assets/js/main.js?v=1"></script>
+</body>
+</html>

@@ -63,7 +63,7 @@ export function piazzaScene() {
   </g>
   <g class="inscription" hidden>
     <rect class="ink1" fill="#D8C9A6" x="258" y="234" width="144" height="34"/>
-    <text x="330" y="256" text-anchor="middle" class="carve">XVII · V · XI · XIII · X · I</text>
+    <text x="330" y="256" text-anchor="middle" class="carve">XX · XIII · III · V</text>
   </g>
   <g class="spot" data-spot="panetteria" tabindex="0">
     <rect class="ink1" fill="#E9C394" x="640" y="270" width="290" height="180"/>

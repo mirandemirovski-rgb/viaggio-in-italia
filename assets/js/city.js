@@ -22,7 +22,7 @@ export function createCity(root, L, ctx) {
   let audioOn = true;
 
   const fillIn = (t) => t
-    .replace(/\{NOME\}/g, S.name || 'GattoMatto')
+    .replace(/\{NOME\}/g, S.name || 'Orfeo')
     .replace(/\{CITTA\}/g, S.city || 'lontano')
     .replace(/\{BENV\}/g, S.gender === 'f' ? 'Benvenuta' : 'Benvenuto')
     .replace(/\{NAZ_IT\}/g, S.nation ? ` Sono ${S.gender === 'f' ? S.nation[2] : S.nation[1]}.` : '')
@@ -97,7 +97,7 @@ export function createCity(root, L, ctx) {
   /* ================= I. Il codice ================= */
   function codice() {
     const P = L.prologue;
-    h(`<section class="r-head"><h3>Il codice</h3><p class="lede">The page in the snow</p></section>`);
+    h(`<section class="r-head"><h3>L’incantesimo</h3><p class="lede">The page in the snow</p></section>`);
     h(`<figure class="scene-wrap">${prologueScene()}</figure>`);
     h(`<div class="prose">${P.story.map(p => `<p>${md(p)}</p>`).join('')}<p class="instr">${esc(P.instruction)}</p></div>`);
     const lines = P.page.map(l => `<p>${md(l.it)}</p>`).join('');
@@ -340,7 +340,7 @@ export function createCity(root, L, ctx) {
     h(`<div class="abc">${P.letters.map(([l, n, c]) => `<button class="letter" data-act="say" data-say="${esc(n)}"><b>${l}</b><span>${esc(n)}</span><i>${esc(c)}</i></button>`).join('')}</div>`);
     h(`<p class="prose small">Letters in foreign words:</p><div class="abc foreign">${P.foreign.map(([l, n, c]) => `<button class="letter" data-act="say" data-say="${esc(n)}"><b>${l}</b><span>${esc(n)}</span><i>${esc(c)}</i></button>`).join('')}</div>`);
     h(`<aside class="note"><p class="note-t">Come si scrive?</p><p>${esc(P.spellingNote)}</p></aside>`);
-    const sp = h(`<section class="speller"><h4>Il tuo nome, al telefono</h4><label><span class="lab">Write a name</span><input maxlength="24" value="${esc(S.name || 'GattoMatto')}"></label><p class="spelled"></p><button class="btn small" data-spell>Ascolta</button></section>`);
+    const sp = h(`<section class="speller"><h4>Il tuo nome, al telefono</h4><label><span class="lab">Write a name</span><input maxlength="24" value="${esc(S.name || 'Orfeo')}"></label><p class="spelled"></p><button class="btn small" data-spell>Ascolta</button></section>`);
     const map = Object.fromEntries([...P.letters, ...P.foreign].map(([l, n, c]) => [l, [n, c]]));
     const spell = (word) => [...word.normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase()].filter(ch => map[ch]).map(ch => `${ch} come ${map[ch][1]}`);
     const upd = () => { sp.querySelector('.spelled').textContent = spell(sp.querySelector('input').value).join(', ') || '…'; };
@@ -356,7 +356,7 @@ export function createCity(root, L, ctx) {
     drill(room.querySelector('.drill-host'), items, { mode: 'practice', onDone: () => { listenDone = true; maybe(); } });
 
     const C = P.cipher;
-    const ci = h(`<section class="cipher"><h4>Il codice dell’arco</h4><p class="prose small">${esc(C.intro)}</p>
+    const ci = h(`<section class="cipher"><h4>La parola dell’arco</h4><p class="prose small">${esc(C.intro)}</p>
       <div class="c-row">${L.piazza.inscription.map((w, k) => `<label class="c-cell"><span>${esc(w)}</span><input inputmode="numeric" maxlength="2" data-k="${k}" aria-label="${esc(w)} in numbers"></label>`).join('')}</div>
       <button class="btn" data-c1>Controlla i numeri</button><p class="err" hidden></p>
       <div class="c2" hidden><p class="prose small">${esc(C.step2)}</p><div class="key">${P.letters.map(([l], k) => `<span><b>${k + 1}</b>${l}</span>`).join('')}</div>
@@ -383,7 +383,7 @@ export function createCity(root, L, ctx) {
       const v = ci.querySelector('.word').value.trim().toUpperCase(), e2 = ci.querySelector('.e2');
       if (!v) { e2.textContent = 'Write the word first.'; e2.hidden = false; return; }
       if (v !== C.answer) { e2.textContent = 'Not yet. Count again: A is 1, and remember there is no J or K.'; e2.hidden = false; return; }
-      e2.hidden = true; solve(); say('semola');
+      e2.hidden = true; solve(); say('voce');
     });
     ci.querySelector('.word').addEventListener('input', () => { ci.querySelector('.e2').hidden = true; });
     if (S.cipher) { ci.querySelectorAll('.c-cell input').forEach((i, k) => { i.value = target[k]; }); solve(); }
@@ -417,7 +417,7 @@ export function createCity(root, L, ctx) {
   function sealed() {
     const box = h(`<section class="sealed"><div class="seal-stage">${sealSVG(L.roman)}</div>
       <h4>Il sigillo di Aosta è tuo.</h4>
-      <p class="prose">${esc(S.name || 'GattoMatto')}, you passed the guardian’s test with ${S.test.score} out of ${S.test.total}.${S.cipher ? ' And the first word of the code is yours: <b>SEMOLA</b>.' : ' The inscription under the arch still waits for you in “Alfabeto e numeri”.'}</p>
+      <p class="prose">${esc(S.name || 'Orfeo')}, you passed the guardian’s test with ${S.test.score} out of ${S.test.total}.${S.cipher ? ' And the first word of the spell is yours: <b>VOCE</b>.' : ' The inscription under the arch still waits for you in “Alfabeto e numeri”.'}</p>
       <p class="prose small">Keep the seal safe: the last door of the journey opens only for those who carry every seal. Your notebook holds everything you learned in Aosta: words, expressions, grammar, your conversations and the curiosities you saved. It is yours to keep.</p>
       <div class="sealed-actions"><button class="btn wax" data-pdf>Scarica il quaderno (PDF)</button><button class="btn" data-onward>Continua il viaggio</button></div>
       <p class="err" hidden></p></section>`);
@@ -469,8 +469,8 @@ export function createCity(root, L, ctx) {
       </svg>
       <p class="kicker">Tappa compiuta</p>
       <h3 id="bus-t">La diligenza per ${esc(L.next)} sta per partire.</h3>
-      <p class="lead">Vuoi scoprire dove arriverà GattoMatto?</p>
-      <p class="small muted">The stagecoach to ${esc(L.next)} is about to leave. Do you want to see where GattoMatto ends up next?</p>
+      <p class="lead">Vuoi scoprire dove arriverà Orfeo?</p>
+      <p class="small muted">The stagecoach to ${esc(L.next)} is about to leave. Do you want to see where Orfeo ends up next?</p>
       <div class="bus-actions"><button class="btn wax" data-yes>Sì</button><button class="btn" data-exit>Esci</button></div>
       <p class="bus-pdf"><button class="link" data-pdf2>Scarica il quaderno di Aosta (PDF)</button></p>
     </div>`;
@@ -483,7 +483,7 @@ export function createCity(root, L, ctx) {
     const sheet = modal.querySelector('.sheet');
     const addr = 'ti.oohay@iksvorimednarim'.split('').reverse().join(''); // kept scrambled, never shown on the page
     const subject = `Viaggio in Italia: voglio continuare dopo ${L.name}`;
-    const body = `Ciao!\n\nHo finito la tappa di ${L.name}${S.test ? ` (prova del custode: ${S.test.score}/${S.test.total})` : ''}.\nVoglio sapere dove andrà GattoMatto.\n\n${S.name || ''}`;
+    const body = `Ciao!\n\nHo finito la tappa di ${L.name}${S.test ? ` (prova del custode: ${S.test.score}/${S.test.total})` : ''}.\nVoglio sapere dove andrà Orfeo.\n\n${S.name || ''}`;
     location.href = `mailto:${addr}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     sheet.innerHTML = `<p class="kicker">Il viaggio continua</p><h3>A presto!</h3>
       <p class="prose small">Your email app should open with a message ready to send. If it does not open, copy the address and write from your usual email.</p>

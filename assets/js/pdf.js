@@ -46,7 +46,7 @@ export async function makeNotebook(L, S) {
   const cover = await svgToPng(coverArt(), 1600, 1040);
 
   const W = 210, H = 297, M = 24, CW = W - 2 * M, BOTTOM = H - 26;
-  const nome = S.name || 'GattoMatto';
+  const nome = S.name || 'Orfeo';
   const now = new Date();
   const data_it = `${now.getDate()} ${MESI[now.getMonth()]} ${now.getFullYear()}`;
   let y = 0;
@@ -125,7 +125,7 @@ export async function makeNotebook(L, S) {
   /* ---------- cover ---------- */
   paper();
   font('Fell', 'normal', 34); doc.text('Viaggio in Italia', W / 2, 44, { align: 'center' });
-  font('Fell', 'italic', 14, WAX); doc.text('ovvero il Codice di GattoMatto', W / 2, 53, { align: 'center' });
+  font('Fell', 'italic', 14, WAX); doc.text('ovvero l’Incantesimo di Orfeo', W / 2, 53, { align: 'center' });
   doc.setDrawColor(INK); doc.setLineWidth(.3); doc.line(W / 2 - 38, 59, W / 2 - 4, 59); doc.line(W / 2 + 4, 59, W / 2 + 38, 59);
   doc.setFillColor(WAX); doc.triangle(W / 2, 57, W / 2 + 2, 59, W / 2, 61, 'F'); doc.triangle(W / 2, 57, W / 2 - 2, 59, W / 2, 61, 'F');
   doc.addImage(cover, 'PNG', M, 70, CW, CW * 520 / 800);
@@ -151,11 +151,11 @@ export async function makeNotebook(L, S) {
     font('Garamond', 'italic', 11, SOFT); doc.text(en, M + 6, y); y += lh(11) + 2.4;
   });
   y += 4;
-  h2('Il codice', 'the page in the snow');
+  h2('L’incantesimo', 'the page in the snow');
   L.prologue.page.forEach(l => { need(12); font('Fell', 'italic', 13); doc.text(plain(l.it), M + 4, y); y += lh(13); font('Garamond', 'normal', 10.5, SOFT); doc.text(l.en, M + 4, y); y += lh(10.5) + 1.6; });
   y += 3;
-  box('La prima parola del codice', S.cipher
-    ? ['Under the arch: XVII · V · XI · XIII · X · I. In Italian words: diciassette, cinque, undici, tredici, dieci, uno. With the Italian alphabet (A = 1, B = 2…) they become: S E M O L A.', 'La semola is the flour of durum wheat, the flour of pasta. Why would an ancient secret begin with flour?']
+  box('La prima parola dell’incantesimo', S.cipher
+    ? ['Under the arch: XX · XIII · III · V. In Italian words: venti, tredici, tre, cinque. With the 21-letter Italian alphabet (A = 1, B = 2…) they become: V O C E.', 'La voce, the voice: the first word of the counter-spell that will make Orfeo a man again.']
     : ['The inscription under the arch is still waiting for you. Go back to Aosta, to “Alfabeto e numeri”, and read it.']);
 
   /* ---------- 2. vocabulary ---------- */
@@ -246,7 +246,7 @@ export async function makeNotebook(L, S) {
   y += 6;
   doc.setDrawColor(INK); doc.setLineWidth(.3); doc.line(M, y, M + CW, y); y += 10;
   font('Fell', 'normal', 18); doc.text('Il viaggio continua', M, y); y += 7;
-  para(`La diligenza per ${L.next} sta per partire. GattoMatto has the first word of the code in his pocket. The next stop is waiting.`, { size: 11.5, style: 'italic', color: SOFT });
+  para(`La diligenza per ${L.next} sta per partire. Orfeo has the first word of the spell in his notebook. The next stop is waiting.`, { size: 11.5, style: 'italic', color: SOFT });
   para('The lessons of Viaggio in Italia follow the CEFR levels of the Council of Europe, the reference syllabi of the Italian certification bodies (CILS, CELI, PLIDA, CERT.IT) and the progression of the major coursebooks for Italian as a foreign language. All texts are original.', { size: 9.5, color: SOFT });
   font('Fell', 'italic', 12); doc.text('Concept and Web Design by Miran Demirovski', M, y + 4);
 

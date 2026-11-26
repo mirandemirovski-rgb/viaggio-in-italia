@@ -52,7 +52,7 @@ async function enterCity(id) {
       session,
       onClose: leaveCity,
       onZaino: drawZaino,
-      onSeal() { if (!session.seals.includes('aosta')) session.seals.push('aosta'); $('#seal-count').textContent = session.seals.length; map.setSealed('aosta'); drawZaino(); },
+      onSeal() { if (!session.seals.includes('aosta')) session.seals.push('aosta'); $('#seal-count').textContent = `${session.seals.length} / 50`; map.setSealed('aosta'); drawZaino(); },
     });
   }
   cityRoot.hidden = false;
@@ -83,7 +83,7 @@ function drawZaino() {
     body.innerHTML = '<p class="lead">Il tuo zaino è vuoto.</p><p>In each city, save the words and curiosities you like: they wait for you here, and in the notebook you can download at the end of the city.</p>';
     return;
   }
-  body.innerHTML = (session.seals.length ? `<p class="lead">Sigilli: ${session.seals.length}</p>` : '') +
+  body.innerHTML = (session.seals.length ? `<p class="lead">Sigilli: ${session.seals.length} / 50</p>` : '') +
     (items.length ? `<ul class="zlist">${items.map(i => `<li><p class="z-it">${i.it}</p><p class="z-en">${i.en}</p><p class="z-txt">${i.txt}</p></li>`).join('')}</ul>` : '') +
     '<p class="note">Nothing is saved after you close the page. Download your notebook at the end of the city to keep everything.</p>';
 }

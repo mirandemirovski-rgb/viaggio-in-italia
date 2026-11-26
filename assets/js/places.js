@@ -46,7 +46,7 @@ export const CITIES = [
 
 export const LANDMARKS = [
   { id: 'montebianco', g: 'bigpeak', lon: 6.87, lat: 45.83, it: 'Monte Bianco', en: 'Mont Blanc', txt: 'The highest mountain in the Alps. Bianco means white: it stays white all year.' },
-  { id: 'gsb', g: 'pass', lon: 7.17, lat: 45.87, it: 'Gran San Bernardo', en: 'the Great St Bernard pass', txt: 'For centuries, pilgrims crossed the Alps here on their way to Rome. GattoMatto came this way too, in the snow.' },
+  { id: 'gsb', g: 'pass', lon: 7.17, lat: 45.87, it: 'Gran San Bernardo', en: 'the Great St Bernard pass', txt: 'For centuries, pilgrims crossed the Alps here on their way to Rome. Orfeo came this way too, in the snow, carrying his lantern.' },
   { id: 'arco', g: 'arch', lon: 7.32, lat: 45.74, it: 'l’Arco d’Augusto', en: 'the Arch of Augustus', txt: 'A Roman arch, over 2,000 years old, still standing in Aosta.' },
   { id: 'mole', g: 'mole', lon: 7.69, lat: 45.07, it: 'la Mole Antonelliana', en: 'Torino’s tower', txt: 'The symbol of Torino. Today it houses the National Museum of Cinema.' },
   { id: 'duomo', g: 'duomo', lon: 9.19, lat: 45.46, it: 'il Duomo di Milano', en: 'Milan Cathedral', txt: 'It took almost six centuries to finish. A golden statue, la Madonnina, watches the city from the top.' },
@@ -148,13 +148,13 @@ export const ROSE2 = { lon: 18.9, lat: 37.15, r: 34 };
 // Invisible ink: only visible under the lantern.
 export const HIDDEN = [
   { lon: 7.0, lat: 46.25, t: 'Comincia dove la neve non dorme mai.', size: 15, rot: -8 },
-  { lon: 9.2, lat: 40.75, t: 'I fili di Dio', size: 26, rot: -6, mark: true },
-  { lon: 10.9, lat: 41.6, t: 'ottaM ottaG', size: 30, mirror: true, rot: 4 },
-  { lon: 12.85, lat: 41.6, t: 'Tutte le strade…', size: 15, rot: -10 },
+  { lon: 9.2, lat: 40.75, t: 'Qui finisce la notte.', size: 24, rot: -6, mark: true },
+  { lon: 10.9, lat: 41.6, t: 'Orfeo', size: 30, mirror: true, rot: 4 },
+  { lon: 12.85, lat: 41.6, t: 'Ogni città custodisce una parola.', size: 15, rot: -10 },
   { lon: 10.55, lat: 44.0, t: 'Leonardo scriveva al contrario.', size: 14, rot: 6, mirror: true },
-  { lon: 17.9, lat: 39.4, t: 'Qualcuno ti segue.', size: 18, rot: -4 },
-  { lon: 13.7, lat: 44.55, t: 'Conta gli archi.', size: 16, rot: 12 },
-  { lon: 8.1, lat: 38.45, t: 'Il segreto non è oro.', size: 16, rot: -3 },
+  { lon: 17.9, lat: 39.4, t: 'Rio ti segue.', size: 18, rot: -4 },
+  { lon: 13.7, lat: 44.55, t: 'Resta con me, Orfeo.', size: 16, rot: 12 },
+  { lon: 8.1, lat: 38.45, t: 'Solo la tua voce spezza l’incantesimo.', size: 15, rot: -3 },
 ];
 
 // Ships sail between these points (lon/lat), looping.

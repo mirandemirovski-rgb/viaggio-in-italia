@@ -1,6 +1,6 @@
 # Viaggio in Italia
 
-**Impara l'italiano attraversando l'Italia, città dopo città, con GattoMatto.**
+**Impara l'italiano attraversando l'Italia, città dopo città, con Orfeo.**
 
 A real Italian course, levels A1 to B1 of the Common European Framework of Reference for Languages (CEFR), told as a journey across an old map of Italy. Each city is a complete lesson unit; some cities are tests.
 

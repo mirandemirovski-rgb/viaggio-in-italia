@@ -21,7 +21,7 @@ export const AOSTA = {
   ],
 
   rooms: [
-    { id: 'codice', it: 'Il codice', en: 'The code' },
+    { id: 'codice', it: 'L’incantesimo', en: 'The spell' },
     { id: 'piazza', it: 'La piazza', en: 'The square' },
     { id: 'panetteria', it: 'In panetteria', en: 'At the bakery' },
     { id: 'saluti', it: 'Saluti e gesti', en: 'Greetings and gestures' },
@@ -34,29 +34,29 @@ export const AOSTA = {
   prologue: {
     story: [
       'Night on the {Gran San Bernardo|the Great St Bernard pass}. Up here, the snow never sleeps.',
-      'GattoMatto walks down towards Italy. In his hand, {la lanterna|the lantern} swings in the wind.',
-      'Something shines under the snow: an old {pagina|page}. The words run backwards, as if in a mirror. Leonardo da Vinci wrote his notebooks this way.',
+      'Orfeo walks down towards Italy in a long coat, {la lanterna|the lantern} in his hand. Once he was a man. Then Rio, the white-and-ginger God of Cats, cast a spell on him: now he is a shadow, half cat and half fox.',
+      'In the snow shines an old {pagina|page}, written backwards like Leonardo da Vinci’s notebooks. It is the beginning of the counter-spell. Its words are hidden across Italy, and they are all in Italian.',
     ],
     instruction: 'Slide the mirror across the page to read it.',
     page: [
       { it: '{Ciao|Hello}, {viaggiatore|traveller}.', en: 'Hello, traveller.' },
-      { it: '{Io sono|I am} {il Codice|the Code}.', en: 'I am the Code.' },
-      { it: '{Non sono|I am not} {oro|gold} {e|and} {non sono|I am not} {argento|silver}.', en: 'I am not gold and I am not silver.' },
-      { it: '{Sono|I am} {un segreto|a secret} {antico|ancient}.', en: 'I am an ancient secret.' },
-      { it: '{Il segreto|The secret} {è|is} {lontano|far away}, {oltre il mare|beyond the sea}.', en: 'The secret is far away, beyond the sea.' },
-      { it: '{La prima chiave|The first key} {è|is} {ad Aosta|in Aosta}, {sotto l’arco|under the arch}.', en: 'The first key is in Aosta, under the arch.' },
-      { it: '{Impara le parole|Learn the words}: {le parole aprono le porte|words open doors}.', en: 'Learn the words: words open doors.' },
+      { it: '{Io sono|I am} Orfeo.', en: 'I am Orfeo.' },
+      { it: '{Non sono|I am not} {un gatto|a cat} {e|and} {non sono|I am not} {una volpe|a fox}.', en: 'I am not a cat and I am not a fox.' },
+      { it: '{Sono|I am} {un uomo|a man}, {prigioniero di un incantesimo|prisoner of a spell}.', en: 'I am a man, prisoner of a spell.' },
+      { it: 'Rio, {il Dio dei Gatti|the God of Cats}, {mi segue|follows me}.', en: 'Rio, the God of Cats, follows me.' },
+      { it: '{La prima parola|The first word} {è|is} {ad Aosta|in Aosta}, {sotto l’arco|under the arch}.', en: 'The first word is in Aosta, under the arch.' },
+      { it: '{Impara l’italiano|Learn Italian}: {solo la tua voce|only your voice} {spezza l’incantesimo|breaks the spell}.', en: 'Learn Italian: only your voice breaks the spell.' },
     ],
     notes: [
       { t: 'Lo sapevi?', txt: 'Leonardo da Vinci wrote most of his notes from right to left, in mirror writing.' },
-      { t: 'è oppure e?', txt: '{è|is}, with the accent, is the verb “is”: {Il segreto è lontano|The secret is far away}. {e|and}, without the accent, means “and”.' },
+      { t: 'è oppure e?', txt: '{è|is}, with the accent, is the verb “is”: {La prima parola è ad Aosta|The first word is in Aosta}. {e|and}, without the accent, means “and”.' },
       { t: 'ad Aosta', txt: 'Before a word that begins with a, the preposition {a|to, in} often becomes {ad|to, in}: {ad Aosta|in Aosta}, {ad Ancona|in Ancona}.' },
     ],
   },
 
   /* ---------- II. La piazza ---------- */
   piazza: {
-    intro: 'GattoMatto reaches Aosta at dawn, under the Roman arch. Explore the square: hover over or tap what you see. Save the words you want to keep: they will be in your notebook at the end.',
+    intro: 'Orfeo reaches Aosta at dawn, under the Roman arch. Explore the square: hover over or tap what you see. Save the words you want to keep: they will be in your notebook at the end.',
     mission: ['gatto', 'fontana', 'arco'],
     spots: [
       { id: 'arco', it: 'l’arco', en: 'the arch', txt: 'L’Arco d’Augusto was built in 25 BC, when the Romans founded the city, in honour of the emperor Augustus. Aosta is called “la piccola Roma delle Alpi”, the little Rome of the Alps.' },
@@ -66,14 +66,14 @@ export const AOSTA = {
       { id: 'panetteria', it: 'la panetteria', en: 'the bakery', txt: 'Pane (bread) + -eria (shop). The same trick gives pizzeria and gelateria. Careful: a libreria is a bookshop, not a library.' },
       { id: 'pane', it: 'il pane', en: 'the bread', txt: 'Words ending in -e can be masculine or feminine: il pane, but la chiave. Always learn a new word together with its article.' },
       { id: 'caffe', it: 'il caffè', en: 'the coffee', txt: 'In Valle d’Aosta friends share caffè alla valdostana from the coppa dell’amicizia, a wooden cup with several spouts. Tradition says it passes from hand to hand without touching the table.' },
-      { id: 'gatto', it: 'il gatto', en: 'the cat', txt: '“Siamo quattro gatti”, we are four cats, means: there are very few of us.' },
+      { id: 'gatto', it: 'il gatto', en: 'the cat', txt: 'A white-and-ginger cat with sparkling eyes watches from the bakery roof. Orfeo freezes: is it Rio? By the way, “siamo quattro gatti”, we are four cats, means: there are very few of us.' },
       { id: 'fontana', it: 'la fontana', en: 'the fountain', txt: 'In many Italian towns, public fountains give fresh drinking water, free for everyone.' },
       { id: 'chiesa', it: 'la chiesa', en: 'the church', txt: 'Near here stands the church of Sant’Orso. Every 30 and 31 January the Fiera di Sant’Orso fills Aosta with wooden crafts. It is more than a thousand years old.' },
       { id: 'cartello', it: 'il cartello', en: 'the sign', txt: 'In Valle d’Aosta French is an official language too. Many signs are in both languages: Panetteria and Boulangerie, Buongiorno and Bonjour.' },
-      { id: 'lanterna', it: 'la lanterna', en: 'the lantern', txt: 'GattoMatto’s lantern. Its light shows what others cannot see.' },
+      { id: 'lanterna', it: 'la lanterna', en: 'the lantern', txt: 'Orfeo’s lantern. Its light reveals hidden ink and keeps Rio’s shadows away.' },
     ],
-    inscription: ['diciassette', 'cinque', 'undici', 'tredici', 'dieci', 'uno'],
-    inscriptionNote: 'Under the arch, carved in the stone, GattoMatto finds six Roman numbers. He copies them into his notebook, in Italian words: diciassette, cinque, undici, tredici, dieci, uno. You will learn to read them in “Alfabeto e numeri”.',
+    inscription: ['venti', 'tredici', 'tre', 'cinque'],
+    inscriptionNote: 'Under the arch, carved in the stone, Orfeo finds four Roman numbers. He copies them into his notebook, in Italian words: venti, tredici, tre, cinque. You will learn to read them in “Alfabeto e numeri”.',
   },
 
   /* ---------- III. In panetteria ---------- */
@@ -206,7 +206,7 @@ export const AOSTA = {
         note: 'The h is silent, but it changes the meaning: {ho|I have} and {o|or}, {hai|you have} and {ai|to the}, {ha|he, she has} and {a|to, at}, {hanno|they have} and {anno|year}.' },
       { id: 'chiamarsi', t: 'Il verbo chiamarsi', en: 'to be called',
         table: [['io mi chiamo', 'my name is'], ['tu ti chiami', 'your name is'], ['lui / lei / Lei si chiama', 'his / her / your (formal) name is'], ['noi ci chiamiamo', 'our names are'], ['voi vi chiamate', 'your (plural) names are'], ['loro si chiamano', 'their names are']],
-        note: 'Literally “I call myself”: {Come ti chiami|What is your name}? {Mi chiamo GattoMatto|My name is GattoMatto}.' },
+        note: 'Literally “I call myself”: {Come ti chiami|What is your name}? {Mi chiamo Orfeo|My name is Orfeo}.' },
       { id: 'articoli', t: 'L’articolo determinativo', en: 'The definite article, singular',
         table: [['il', 'masculine, before a consonant: il pane, il gatto'], ['lo', 'masculine, before z, gn, ps or s + consonant: lo zaino, lo studente'], ['l’', 'masculine or feminine, before a vowel: l’arco, l’acqua'], ['la', 'feminine, before a consonant: la chiave, la fontana']],
         note: 'Nouns in -o are usually masculine, nouns in -a usually feminine. Nouns in -e can be both: {il pane|the bread}, {la chiave|the key}. Learn every word with its article.' },
@@ -223,7 +223,7 @@ export const AOSTA = {
       { type: 'choice', q: 'Rina ___ la fornaia.', options: ['è', 'e', 'ha'], a: 'è', why: '“è” with the accent is the verb: lei è.' },
       { type: 'choice', q: 'Come ___ chiami?', options: ['ti', 'mi', 'si'], a: 'ti', why: 'tu ti chiami' },
       { type: 'choice', q: 'Signora, come si ___?', options: ['chiama', 'chiami', 'chiamo'], a: 'chiama', why: 'Lei si chiama: the formal “you” takes the same form as lui and lei.' },
-      { type: 'choice', q: 'GattoMatto ___ una lanterna.', options: ['ha', 'a', 'ho'], a: 'ha', why: 'lui ha. “a” without h means “to, at”.' },
+      { type: 'choice', q: 'Orfeo ___ una lanterna.', options: ['ha', 'a', 'ho'], a: 'ha', why: 'lui ha. “a” without h means “to, at”.' },
       { type: 'choice', q: 'Io ___ una domanda.', options: ['ho', 'o', 'hai'], a: 'ho', why: 'io ho. “o” without h means “or”.' },
       { type: 'pick', q: 'Which article? ___ zaino', img: 'zaino', options: ['il', 'lo', 'la', 'l’'], a: 'lo', why: 'lo before z: lo zaino.' },
       { type: 'pick', q: 'Which article? ___ chiave', img: 'chiave', options: ['il', 'lo', 'la', 'l’'], a: 'la', why: 'chiave ends in -e but it is feminine: la chiave.' },
@@ -262,10 +262,10 @@ export const AOSTA = {
     numbersNote: 'From 11 to 16 the numbers end in -dici: undici, dodici, tredici, quattordici, quindici, sedici. From 17 to 19 they begin with dici-: diciassette, diciotto, diciannove.',
     listen: [[3, [3, 13, 20]], [7, [17, 7, 11]], [11, [1, 12, 11]], [13, [3, 16, 13]], [16, [6, 16, 12]], [19, [9, 10, 19]]],
     cipher: {
-      intro: 'Now you can read the inscription under the arch. GattoMatto copied it in Italian words: turn each word into a number.',
+      intro: 'Now you can read the inscription under the arch. Orfeo copied it in Italian words: turn each word into a number.',
       step2: 'Each number is a letter of the Italian alphabet: A = 1, B = 2, C = 3… Remember: the Italian alphabet has 21 letters, without J, K, W, X and Y.',
-      answer: 'SEMOLA',
-      reveal: '{La semola|semolina} is the flour of durum wheat: the flour of pasta. Why would an ancient secret begin with flour? GattoMatto writes the word in his notebook.',
+      answer: 'VOCE',
+      reveal: '{La voce|the voice}: the first word of the counter-spell. At the end of the journey Orfeo must say the whole spell aloud, in Italian, to become a man again. Without a voice, the words are nothing. He writes VOCE in his notebook.',
     },
   },
 

@@ -258,7 +258,7 @@ export function createMap(svg, { onCard, onHideCard, onEnter }) {
   seal.addEventListener('click', (e) => { e.stopPropagation(); if (!dragged && e.pointerType !== 'touch') onEnter('aosta'); });
   seal.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onEnter('aosta'); } });
 
-  // GattoMatto, at the pass first
+  // Orfeo, at the pass first
   const gm = gattoMatto(gGM, gx, gy + 2, .12);
   const gmTarget = [ax + 17, ay + 3];
 
@@ -507,7 +507,7 @@ function drawCartouche(g, x, y, w, h) {
   const mx = x + w / 2;
   el(g, 'path', { class: 'k', d: `M${mx - 40},${y + 22}q20,-10 40,0q20,-10 40,0` });
   el(g, 'text', { class: 'cart-title', x: mx, y: y + 84, 'text-anchor': 'middle' }, 'Viaggio in Italia');
-  el(g, 'text', { class: 'cart-sub', x: mx, y: y + 116, 'text-anchor': 'middle' }, 'ovvero il Codice di GattoMatto');
+  el(g, 'text', { class: 'cart-sub', x: mx, y: y + 116, 'text-anchor': 'middle' }, 'ovvero l’Incantesimo di Orfeo');
   el(g, 'path', { class: 'k', d: `M${mx - 90},${y + 132}H${mx - 8}M${mx + 8},${y + 132}H${mx + 90}` });
   el(g, 'path', { class: 'wax-fill', d: `M${mx},${y + 127}l5,5l-5,5l-5,-5Z` });
   el(g, 'text', { class: 'cart-line', x: mx, y: y + 156, 'text-anchor': 'middle' }, 'Carta per chi impara la lingua del Bel Paese');

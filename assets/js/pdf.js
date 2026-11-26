@@ -135,7 +135,7 @@ export async function makeNotebook(L, S) {
   font('Fell', 'normal', 28); doc.text(nome, W / 2, cy + 12, { align: 'center' });
   font('Fell', 'normal', 16); doc.text(`Tappa ${L.roman}: ${L.name}`, W / 2, cy + 26, { align: 'center' });
   font('Garamond', 'italic', 12.5, SOFT); doc.text(`${L.title}, livello ${L.level}`, W / 2, cy + 33, { align: 'center' });
-  if (S.test?.passed) seal(W / 2, cy + 52, 11);
+  if (S.test?.passed) seal(W / 2, cy + 47, 9);
   font('Garamond', 'normal', 11, SOFT);
   doc.text(data_it, W / 2, H - 42, { align: 'center' });
   if (S.test) doc.text(`Prova del custode: ${S.test.score} su ${S.test.total}`, W / 2, H - 36.5, { align: 'center' });

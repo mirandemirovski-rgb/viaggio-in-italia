@@ -1,5 +1,5 @@
 // A city of the journey: seven rooms, exercises, the guardian's test, the seal.
-// Nothing is saved: everything lives only while the page is open.
+// Progress is saved on this device by main.js (ctx.save). A finished city opens at its end and can be redone freely.
 import { speak, canSpeak, hasItalianVoice } from './speech.js';
 import { icon, piazzaScene, prologueScene, cityBanner, sealSVG } from './art.js';
 import { NATIONS } from './lessons/aosta.js';
@@ -59,7 +59,8 @@ export function createCity(root, L, ctx) {
   function drawNav() {
     nav.innerHTML = L.rooms.map((r, i) => `<li><button class="${i === current ? 'on' : ''} ${S.done.has(r.id) ? 'done' : ''}" data-room="${i}" aria-current="${i === current ? 'step' : 'false'}"><span class="n">${['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'][i]}</span><span class="t">${esc(r.it)}</span><span class="e">${esc(r.en)}</span></button></li>`).join('');
   }
-  function markDone(id) { if (!S.done.has(id)) { S.done.add(id); drawNav(); } }
+  function markDone(id) { if (!S.done.has(id)) { S.done.add(id); drawNav(); ctx.save?.(); } }
+  let retake = false;
 
   function go(i) {
     current = Math.max(0, Math.min(L.rooms.length - 1, i));
@@ -395,7 +396,8 @@ export function createCity(root, L, ctx) {
     const P = L.prova;
     h(`<section class="r-head"><h3>La prova del custode</h3><p class="lede">Fifteen questions for the seal of Aosta</p></section>`);
     h(`<p class="prose">${md(P.intro)}</p>`);
-    if (S.test?.passed) return sealed();
+    if (S.test?.passed && !retake) return sealed();
+    retake = false;
     const start = h(`<div class="start"><p class="prose small">You need ${P.pass} correct answers out of ${P.items.length}. There are no hints during the test: you will see the corrections at the end.</p><button class="btn wax">Comincia la prova</button></div>`);
     start.querySelector('button').addEventListener('click', () => {
       start.remove();
@@ -406,7 +408,8 @@ export function createCity(root, L, ctx) {
   function results(r, host) {
     const P = L.prova;
     const passed = r.score >= P.pass;
-    S.test = { score: r.score, total: r.total, passed };
+    S.test = S.test?.passed && S.test.score >= r.score ? S.test : { score: r.score, total: r.total, passed };
+    ctx.save?.();
     host.innerHTML = `<div class="results ${passed ? 'pass' : 'fail'}"><p class="score">${r.score} / ${r.total}</p>
       <p class="prose">${passed ? 'Ottimo! The guardian nods and lifts his wooden key.' : `You need ${P.pass} correct answers. Look at the corrections and try again: the questions will be shuffled.`}</p>
       ${r.wrong.length ? `<h4>Le correzioni</h4><ul class="fixes">${r.wrong.map(w => `<li><p class="q">${esc(w.q)}</p><p><span class="no">${esc(w.given || '(no answer)')}</span> <span class="yes">${esc(w.a)}</span></p>${w.why ? `<p class="small muted">${esc(w.why)}</p>` : ''}</li>`).join('')}</ul>` : ''}
@@ -420,10 +423,13 @@ export function createCity(root, L, ctx) {
       <p class="prose">${esc(S.name || 'Orfeo')}, you passed the guardian’s test with ${S.test.score} out of ${S.test.total}.${S.cipher ? ' And the first word of the spell is yours: <b>VOCE</b>.' : ' The inscription under the arch still waits for you in “Alfabeto e numeri”.'}</p>
       <p class="prose small">Keep the seal safe: the last door of the journey opens only for those who carry every seal. Your notebook holds everything you learned in Aosta: words, expressions, grammar, your conversations and the curiosities you saved. It is yours to keep.</p>
       <div class="sealed-actions"><button class="btn wax" data-pdf>Scarica il quaderno (PDF)</button><button class="btn" data-onward>Continua il viaggio</button></div>
+      <p class="small redo"><button class="link" data-redo>Rifai la lezione dall’inizio</button> &nbsp;·&nbsp; <button class="link" data-retake>Rifai la prova</button></p>
       <p class="err" hidden></p></section>`);
     box.querySelector('[data-pdf]').addEventListener('click', () => pdf(box));
     box.querySelector('[data-onward]').addEventListener('click', onward);
-    setTimeout(onward, 2600);
+    box.querySelector('[data-redo]').addEventListener('click', () => go(0));
+    box.querySelector('[data-retake]').addEventListener('click', () => { retake = true; go(current); });
+    setTimeout(() => { if (room.dataset.id === 'prova' && room.contains(box)) onward(); }, 2600);
   }
   async function pdf(box) {
     const b = box.querySelector('[data-pdf]'), err = box.querySelector('.err');
@@ -583,6 +589,6 @@ export function createCity(root, L, ctx) {
 
   if (canSpeak() && !hasItalianVoice()) setTimeout(() => { if (!hasItalianVoice()) $('[data-act="audio"]').title = 'No Italian voice found on this device'; }, 1500);
   drawNav();
-  go(0);
+  go(S.test?.passed ? L.rooms.length - 1 : 0);
   return { go };
 }

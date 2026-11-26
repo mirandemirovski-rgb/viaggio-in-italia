@@ -2,8 +2,20 @@ import { createMap } from './map.js';
 import { createCity } from './city.js';
 import { AOSTA } from './lessons/aosta.js';
 
-// Nothing is saved: every visit is a new journey. The session lives only in memory.
+// Progress is kept on this device only: finished rooms, seals, the notebook details and the backpack.
+// Tickets are never kept: whoever has one types it each time.
+const KEY = 'viaggio-in-italia:v1';
 const session = { done: new Set(), zaino: new Map(), seals: [] };
+try {
+  const d = JSON.parse(localStorage.getItem(KEY) || 'null');
+  if (d) Object.assign(session, d, { done: new Set(d.done || []), zaino: new Map(d.zaino || []), seals: d.seals || [] });
+} catch { /* storage unavailable: the journey lives in memory only */ }
+function save() {
+  const { ticket, ...keep } = session;
+  try { localStorage.setItem(KEY, JSON.stringify({ ...keep, done: [...session.done], zaino: [...session.zaino] })); } catch { /* */ }
+}
+addEventListener('pagehide', save);
+document.addEventListener('visibilitychange', () => { if (document.hidden) save(); });
 
 const $ = (s) => document.querySelector(s);
 const svg = $('#map');
@@ -50,9 +62,10 @@ async function enterCity(id) {
   if (!city) {
     city = createCity(cityRoot, AOSTA, {
       session,
+      save,
       onClose: leaveCity,
       onZaino: drawZaino,
-      onSeal() { if (!session.seals.includes('aosta')) session.seals.push('aosta'); $('#seal-count').textContent = `${session.seals.length} / 50`; map.setSealed('aosta'); drawZaino(); },
+      onSeal() { if (!session.seals.includes('aosta')) session.seals.push('aosta'); $('#seal-count').textContent = `${session.seals.length} / 50`; map.setSealed('aosta'); drawZaino(); save(); },
     });
   }
   cityRoot.hidden = false;
@@ -62,6 +75,7 @@ async function enterCity(id) {
   entering = false;
 }
 function leaveCity() {
+  save();
   if (cityRoot.hidden) return;
   cityRoot.classList.remove('open');
   document.body.classList.remove('in-city');
@@ -76,6 +90,7 @@ window.addEventListener('popstate', () => {
 
 /* ---------- the backpack ---------- */
 function drawZaino() {
+  save();
   const items = [...session.zaino.values()];
   $('#zaino-count').textContent = items.length;
   const body = $('#zaino .zaino-body');
@@ -85,7 +100,7 @@ function drawZaino() {
   }
   body.innerHTML = (session.seals.length ? `<p class="lead">Sigilli: ${session.seals.length} / 50</p>` : '') +
     (items.length ? `<ul class="zlist">${items.map(i => `<li><p class="z-it">${i.it}</p><p class="z-en">${i.en}</p><p class="z-txt">${i.txt}</p></li>`).join('')}</ul>` : '') +
-    '<p class="note">Nothing is saved after you close the page. Download your notebook at the end of the city to keep everything.</p>';
+    '<p class="note">Finished cities and your backpack stay on this device. Download your notebook at the end of each city to keep everything.</p>';
 }
 drawZaino();
 
@@ -144,3 +159,6 @@ map.intro(!wholeItaly).then(async () => {
   if (location.hash === '#/aosta') enterCity('aosta');
 });
 $('#hint').addEventListener('click', (e) => e.currentTarget.classList.remove('show'));
+
+// A finished city stays finished on this device
+if (session.seals.includes('aosta')) { $('#seal-count').textContent = `${session.seals.length} / 50`; map.setSealed('aosta'); }

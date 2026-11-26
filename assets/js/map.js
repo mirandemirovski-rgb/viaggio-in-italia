@@ -1,7 +1,7 @@
 // The Pergamena map: layers, pan & zoom, cards, lantern, opening sequence.
 import { GEO } from './geo.js';
 import * as P from './places.js';
-import { el, rnd, reseed, mountain, hill, tree, cypress, town, LANDMARK, ship, serpent, rose, rhumbs, gattoMatto } from './glyphs.js';
+import { el, rnd, reseed, mountain, hill, tree, cypress, town, LANDMARK, ship, serpent, rose, rhumbs, gattoMatto, rioCat } from './glyphs.js';
 
 const RAD = Math.PI / 180;
 export function project(lon, lat) {
@@ -59,6 +59,17 @@ export function createMap(svg, { onCard, onHideCard, onEnter }) {
   el(mask, 'rect', { x: -2000, y: -2000, width: 6000, height: 6000, fill: '#000' });
   const lamp = el(mask, 'circle', { cx: -999, cy: -999, r: 120, fill: 'url(#lampGrad)' });
 
+  // Twilight veil: white = in shadow, black = lit by Orfeo's lantern or the visitor's
+  const scg = el(defs, 'radialGradient', { id: 'shadowCut' });
+  [[0, 1], [.48, .9], [.78, .35], [1, 0]].forEach(([o, a]) => el(scg, 'stop', { offset: o, 'stop-color': '#000', 'stop-opacity': a }));
+  const shadowMask = el(defs, 'mask', { id: 'shadowMask', maskUnits: 'userSpaceOnUse', x: -2000, y: -2000, width: 6000, height: 6000 });
+  el(shadowMask, 'rect', { x: -2000, y: -2000, width: 6000, height: 6000, fill: '#fff' });
+  const litPools = el(shadowMask, 'g');
+  let orfeoR = 150;
+  const orfeoLight = el(shadowMask, 'circle', { cx: -999, cy: -999, r: orfeoR, fill: 'url(#shadowCut)' });
+  const cursorLight = el(shadowMask, 'circle', { cx: -999, cy: -999, r: 160, fill: 'url(#shadowCut)' });
+  const moveOrfeoLight = (x, y) => { orfeoLight.setAttribute('cx', r1(x)); orfeoLight.setAttribute('cy', r1(y)); };
+
   const [ax, ay] = project(P.STOPS[0].lon, P.STOPS[0].lat);
   const [tox, toy] = project(7.69, 45.07);
   const fade = el(defs, 'linearGradient', { id: 'routeFade', gradientUnits: 'userSpaceOnUse', x1: ax, y1: ay, x2: ax + (tox - ax) * .55, y2: ay + (toy - ay) * .55 });
@@ -79,8 +90,10 @@ export function createMap(svg, { onCard, onHideCard, onEnter }) {
   const gTowns = L('L-towns');
   const gSeaDeco = L('L-deco');
   const gLabels = L('L-towns');
+  const gShadow = L('L-shadow');
   const gRoute = L('L-route');
   const gGM = L('L-gm');
+  const gCart = L('L-deco');
   const gInk = el(svg, 'g', { class: 'hidden-ink', mask: 'url(#lampMask)' });
 
   // sea
@@ -243,8 +256,9 @@ export function createMap(svg, { onCard, onHideCard, onEnter }) {
   });
 
   // cartouche
-  drawCartouche(el(gSeaDeco, 'g', { class: 'cartouche' }), 1040, 36, 404, 228);
-  drawScale(el(gSeaDeco, 'g', { class: 'scalebar' }), 1150, 1150);
+  el(gShadow, 'rect', { class: 'shadow-veil', x: -2000, y: -2000, width: W + 4000, height: H + 4000, mask: 'url(#shadowMask)' });
+  drawCartouche(el(gCart, 'g', { class: 'cartouche' }), 1040, 36, 404, 228);
+  drawScale(el(gCart, 'g', { class: 'scalebar' }), 1150, 1150);
 
   /* ---------- the route so far ---------- */
   const [gx, gy] = project(P.START.lon, P.START.lat);
@@ -255,12 +269,18 @@ export function createMap(svg, { onCard, onHideCard, onEnter }) {
   el(seal, 'circle', { class: 'seal-wax', cx: r1(ax), cy: r1(ay + 9), r: 6.6 });
   el(seal, 'circle', { class: 'seal-ring', cx: r1(ax), cy: r1(ay + 9), r: 4.6 });
   el(seal, 'text', { class: 'seal-num', x: r1(ax), y: r1(ay + 11.6), 'text-anchor': 'middle' }, 'I');
+  [[-3, '-4px', 0], [2.5, '5px', .9], [0, '-1px', 1.7]].forEach(([dx, sx, d]) =>
+    el(seal, 'circle', { class: 'spark', cx: r1(ax + dx), cy: r1(ay + 3), r: 1.1, style: `--sx:${sx};animation-delay:${d}s` }));
+  const tag = el(seal, 'g', { class: 'start-tag', transform: `translate(${r1(ax - 60)} ${r1(ay + 9)})` });
+  el(tag, 'path', { class: 'start-ribbon', d: 'M0,-8h44l6,8l-6,8h-44l4,-8Z' });
+  el(tag, 'text', { class: 'start-text', x: 24, y: 3, 'text-anchor': 'middle' }, 'Inizio');
   seal.addEventListener('click', (e) => { e.stopPropagation(); if (!dragged && e.pointerType !== 'touch') onEnter('aosta'); });
   seal.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onEnter('aosta'); } });
 
   // Orfeo, at the pass first
   const gm = gattoMatto(gGM, gx, gy + 2, .12);
   const gmTarget = [ax + 17, ay + 3];
+  moveOrfeoLight(gx, gy - 4);
 
   /* ---------- invisible ink ---------- */
   for (const h of P.HIDDEN) {
@@ -273,6 +293,15 @@ export function createMap(svg, { onCard, onHideCard, onEnter }) {
     }
   }
 
+  // Rio's pawprints towards Torino, and Rio himself, visible only in the lantern's light
+  for (const [lon, lat, rot] of [[7.46, 45.58, 152], [7.58, 45.44, 158], [7.66, 45.29, 166], [7.72, 45.16, 174]]) {
+    const [px, py] = project(lon, lat);
+    const pg = el(gInk, 'g', { class: 'ink-paw', transform: `translate(${r1(px)} ${r1(py)}) rotate(${rot})` });
+    el(pg, 'ellipse', { cx: 0, cy: 1.8, rx: 2.3, ry: 1.7 });
+    for (const [cx, cy] of [[-2.6, -1.6], [0, -2.6], [2.6, -1.6]]) el(pg, 'circle', { cx, cy, r: 1 });
+  }
+  for (const [lon, lat, sc] of [[7.0, 45.98, .5], [8.1, 45.2, .55], [9.75, 40.35, .7]]) rioCat(gInk, ...project(lon, lat), sc);
+
   /* ---------- view: pan & zoom ---------- */
   const view = { x: 0, y: 0, w: W, h: H };
   const ITALY = { x: 360, y: 50, w: 880, h: 1150 };
@@ -284,6 +313,7 @@ export function createMap(svg, { onCard, onHideCard, onEnter }) {
     const px = view.w / Math.max(1, box().width);
     lampR = 150 * px;
     lamp.setAttribute('r', r1(lampR));
+    cursorLight.setAttribute('r', r1(lampR * 1.45));
     svg.style.setProperty('--px', px);
   }
   function clamp(v) {
@@ -383,7 +413,7 @@ export function createMap(svg, { onCard, onHideCard, onEnter }) {
   };
   svg.addEventListener('pointerup', up);
   svg.addEventListener('pointercancel', up);
-  svg.addEventListener('pointerleave', () => { lamp.setAttribute('cx', -999); onHideCard(); document.body.style.setProperty('--lx', '-999px'); });
+  svg.addEventListener('pointerleave', () => { lamp.setAttribute('cx', -999); cursorLight.setAttribute('cx', -999); onHideCard(); document.body.style.setProperty('--lx', '-999px'); });
   svg.addEventListener('click', (e) => {
     if (dragged || e.pointerType === 'touch' || e.pointerType === 'pen') return;
     const t = e.target.closest('[data-card]');
@@ -393,6 +423,7 @@ export function createMap(svg, { onCard, onHideCard, onEnter }) {
   function moveLamp(cx, cy) {
     const [x, y] = toWorld(cx, cy);
     lamp.setAttribute('cx', r1(x)); lamp.setAttribute('cy', r1(y));
+    cursorLight.setAttribute('cx', r1(x)); cursorLight.setAttribute('cy', r1(y));
     document.body.style.setProperty('--lx', cx + 'px');
     document.body.style.setProperty('--ly', cy + 'px');
   }
@@ -419,6 +450,7 @@ export function createMap(svg, { onCard, onHideCard, onEnter }) {
       s.g.setAttribute('transform', `translate(${r1(x)} ${r1(y)})`);
       s.inner.setAttribute('transform', `scale(${dir} 1) rotate(${(Math.sin(t / 900 + s.off * 9) * 3).toFixed(2)})`);
     }
+    orfeoLight.setAttribute('r', r1(orfeoR * (1 + Math.sin(t / 1350) * .065)));
     requestAnimationFrame(tick);
   }
   if (!reduced) requestAnimationFrame(tick); else tick(0);
@@ -434,6 +466,7 @@ export function createMap(svg, { onCard, onHideCard, onEnter }) {
         const e2 = ease(k);
         const x = from[0] + (to[0] - from[0]) * e2, y = from[1] + (to[1] - from[1]) * e2 + Math.sin(k * Math.PI * 7) * .6;
         gm.setAttribute('transform', `translate(${r1(x - 12)} ${r1(y - 34.8)}) scale(.12)`);
+        moveOrfeoLight(x, y - 6);
         if (k < 1) requestAnimationFrame(step); else { gm.classList.remove('walking'); res(); }
       };
       requestAnimationFrame(step);
@@ -447,6 +480,7 @@ export function createMap(svg, { onCard, onHideCard, onEnter }) {
     if (!full || reduced) {
       svg.classList.add('ready', 's1', 's2', 's3', 's4', 's5');
       gm.setAttribute('transform', `translate(${r1(gmTarget[0] - 12)} ${r1(gmTarget[1] - 34.8)}) scale(.12)`);
+      moveOrfeoLight(gmTarget[0], gmTarget[1] - 6);
       svg.classList.add('s6');
       if (!reduced) await animateTo(aostaView(), 1800);
       else Object.assign(view, aostaView()), apply();
@@ -469,7 +503,11 @@ export function createMap(svg, { onCard, onHideCard, onEnter }) {
   return {
     intro,
     skip() { skipped = true; svg.classList.add('s1', 's2', 's3', 's4', 's5', 's6'); svg.classList.remove('intro'); },
-    setSealed() { seal.classList.add('stamped'); },
+    setSealed() {
+      seal.classList.add('stamped');
+      if (!litPools.firstChild) el(litPools, 'circle', { cx: r1(ax), cy: r1(ay), r: 170, fill: 'url(#shadowCut)' });
+      orfeoR = 195;
+    },
     home: () => animateTo(fitBox(ITALY), 1200),
     zoomBy: (f) => { const r = svg.getBoundingClientRect(); const v = { ...view }; const nw = v.w / f; animateTo(clamp({ x: v.x + v.w / 2 - nw / 2, y: v.y + v.h / 2 - nw / aspect() / 2, w: nw, h: nw / aspect() }), 400); },
     focusAosta: () => animateTo(aostaView(), 1200),

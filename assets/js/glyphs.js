@@ -327,3 +327,18 @@ export function gattoMatto(g, x, y, sc, { glow = true } = {}) {
   el(lan, 'path', { d: 'M131,188h16M131,206h16', stroke: '#2A1D10', 'stroke-width': 2.4 });
   return wrap;
 }
+
+// Rio, the God of Cats: white and ginger, sitting, with sparkling eyes. Paws at (x, y), about 48 units tall.
+export function rioCat(g, x, y, sc = 1) {
+  const w = el(g, 'g', { class: 'rio', transform: `translate(${R(x)} ${R(y)}) scale(${sc})` });
+  el(w, 'path', { class: 'rio-tail', d: 'M9,-2Q21,-1 21,-10Q21,-18 15,-21' });
+  el(w, 'path', { class: 'rio-w', d: 'M-10,0Q-14,-14 -8,-24Q-4,-30 0,-30Q4,-30 8,-24Q14,-14 10,0Z' });
+  el(w, 'path', { class: 'rio-g', d: 'M4,-25Q12,-15 9,-3Q6,-11 2,-16Z' });
+  el(w, 'path', { class: 'rio-w', d: 'M-7,-38L-6,-47L-1,-41ZM7,-38L6,-47L1,-41Z' });
+  el(w, 'ellipse', { class: 'rio-w', cx: 0, cy: -34, rx: 8, ry: 7 });
+  el(w, 'path', { class: 'rio-g', d: 'M-7,-36Q0,-43 7,-36Q3,-37 0,-35Q-3,-37 -7,-36Z' });
+  el(w, 'path', { class: 'rio-line', d: 'M-3,0V-9M3,0V-9' });
+  el(w, 'circle', { class: 'rio-eye', cx: -3, cy: -34, r: 1.4 });
+  el(w, 'circle', { class: 'rio-eye', cx: 3, cy: -34, r: 1.4, style: 'animation-delay:.4s' });
+  return w;
+}

@@ -570,3 +570,22 @@ button.pill:hover { background: #fff8e6; }
   .leaf .txt { font-size: 19px; }
   .r-head h3 { font-size: 30px; }
 }
+
+/* twilight veil, start ribbon, sparks, Rio */
+.L-shadow { pointer-events: none; }
+.shadow-veil { fill: #1E140A; fill-opacity: .34; }
+#map.intro .L-shadow { opacity: 0; }
+#map.intro.s5 .L-shadow { opacity: 1; }
+.start-ribbon { fill: var(--wax); stroke: #5E1A12; stroke-width: .7; }
+.start-text { font-family: Fell; font-size: 9px; fill: #F2D9C4; letter-spacing: .04em; pointer-events: none; }
+.spark { fill: var(--gold); pointer-events: none; opacity: 0; transform-box: fill-box; animation: spark 2.6s ease-out infinite; }
+@keyframes spark { 0% { opacity: 0; transform: translate(0, 0) scale(.6); } 20% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--sx), -14px) scale(.2); } }
+.seal.stamped .spark { display: none; }
+.ink-paw { fill: #7A3B12; fill-opacity: .7; }
+.rio-w { fill: #F6EFE2; stroke: #3A2614; stroke-width: .9; }
+.rio-g { fill: #D9822B; }
+.rio-tail { fill: none; stroke: #D9822B; stroke-width: 3; stroke-linecap: round; }
+.rio-line { fill: none; stroke: #3A2614; stroke-width: .7; }
+.rio-eye { fill: #F5C542; animation: twinkle 1.8s ease-in-out infinite; }
+@keyframes twinkle { 50% { fill: #FFF6C8; } }
+@media (prefers-reduced-motion: reduce) { .spark, .rio-eye { animation: none; } }

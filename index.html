@@ -15,7 +15,7 @@
 <link rel="preload" href="assets/fonts/fell.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/fell-italic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/garamond.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css?v=8">
+<link rel="stylesheet" href="assets/css/style.css?v=11">
 </head>
 <body>
 <h1 class="sr">Viaggio in Italia: un corso di italiano dal livello A1 al B1, sulla mappa d’Italia</h1>
@@ -45,6 +45,7 @@
 </div>
 
 <div class="hud hud-right">
+  <button class="pill" data-open="#legenda">Legenda</button>
   <button class="pill" data-open="#metodo">Il metodo</button>
   <div class="zoom" role="group" aria-label="Zoom">
     <button id="zin" aria-label="Avvicina">+</button>
@@ -56,6 +57,25 @@
 </div>
 
 <p class="credit-line">Concept and Web Design by Miran Demirovski</p>
+
+<section id="legenda" class="panel" role="dialog" aria-modal="true" aria-labelledby="legenda-t" hidden>
+  <div class="sheet">
+    <button class="close" data-close aria-label="Chiudi">×</button>
+    <h2 id="legenda-t">Legenda</h2>
+    <p class="lead">Come si legge questa carta</p>
+    <p>How to read this map.</p>
+    <dl class="legend-key">
+      <div><dt><svg viewBox="0 0 34 34" aria-hidden="true"><path d="M17,3v5" stroke="#3A2716" stroke-width="1.6"/><rect x="10" y="8" width="14" height="19" rx="2" fill="#FFD27A" stroke="#3A2716" stroke-width="1.6"/><path d="M9,8h16M9,27h16" stroke="#3A2716" stroke-width="2.4"/><circle cx="17" cy="17.5" r="3" fill="#F2A23A"/></svg></dt>
+        <dd><b>La lanterna e le ombre</b> <i>the lantern and the shadows</i><br>Move the cursor, or tap on a phone, to push back the twilight. Rio’s messages are written in hidden ink: they appear only in the lantern’s light.</dd></div>
+      <div><dt><span class="w-demo">parola</span></dt>
+        <dd><b>Le parole</b> <i>the words</i><br>Every word with a dotted underline is alive. Hover over it, or tap it, to see its English meaning; click it to hear it in Italian, with Voce on.</dd></div>
+      <div><dt class="roman">I–VII</dt>
+        <dd><b>Le città</b> <i>the cities</i><br>Each stop has seven short rooms. Move freely between them in the side menu, and save the curiosities of the illustrated square in your Zaino.</dd></div>
+      <div><dt><svg viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="13" fill="#8E2A1E" stroke="#5E1A12"/><circle cx="17" cy="17" r="9" fill="none" stroke="#C7685A"/><text x="17" y="21" text-anchor="middle" font-family="Fell, serif" font-size="11" fill="#F2D9C4">I</text></svg></dt>
+        <dd><b>I sigilli</b> <i>the seals</i><br>Pass the guardian’s test to earn the city’s seal. A finished city stays finished on this device, and you can redo it whenever you like.</dd></div>
+    </dl>
+  </div>
+</section>
 
 <section id="metodo" class="panel" role="dialog" aria-modal="true" aria-labelledby="metodo-t" hidden>
   <div class="sheet">
@@ -101,6 +121,6 @@
 
 <section id="city" class="city-root" hidden></section>
 
-<script type="module" src="assets/js/main.js?v=8"></script>
+<script type="module" src="assets/js/main.js?v=9"></script>
 </body>
 </html>

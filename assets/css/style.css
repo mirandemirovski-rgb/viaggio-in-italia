@@ -597,3 +597,15 @@ button.pill:hover { background: #fff8e6; }
 .ticket input:focus-visible { outline: 2px solid var(--wax); outline-offset: 2px; }
 .ticket .fhint { width: 100%; text-align: center; min-height: 1.3em; margin: 0; }
 .ticket-ok { text-align: center; margin: 12px 0 4px; }
+
+/* Legenda: the map's key, ruled like an antique cartouche */
+.legend-key { margin: 18px 4px 4px; padding: 4px 16px; border: 1px solid #3A2716; outline: 1px solid #3A2716; outline-offset: 3px; }
+.legend-key > div { display: grid; grid-template-columns: 56px 1fr; gap: 14px; align-items: start; padding: 12px 0; border-bottom: 1px solid rgba(58, 39, 22, .22); }
+.legend-key > div:last-child { border-bottom: 0; }
+.legend-key dt { display: grid; place-items: center; min-height: 36px; }
+.legend-key dt svg { width: 34px; height: 34px; }
+.legend-key dt.roman { font-family: Fell; font-size: 1.05rem; color: var(--wax); }
+.legend-key dd { margin: 0; line-height: 1.5; }
+.legend-key dd i { opacity: .7; margin-left: 4px; }
+.w-demo { font-family: Fell; border-bottom: 1.5px dotted currentColor; }
+@media (max-width: 700px) { .hud .zoom { display: none; } }

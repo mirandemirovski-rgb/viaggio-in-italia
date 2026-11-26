@@ -589,3 +589,11 @@ button.pill:hover { background: #fff8e6; }
 .rio-eye { fill: #F5C542; animation: twinkle 1.8s ease-in-out infinite; }
 @keyframes twinkle { 50% { fill: #FFF6C8; } }
 @media (prefers-reduced-motion: reduce) { .spark, .rio-eye { animation: none; } }
+
+/* stagecoach ticket */
+.ticket { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; margin: 14px 0 6px; }
+.ticket label { width: 100%; text-align: center; font-family: Fell; }
+.ticket input { font: 1.25rem/1.2 Fell, serif; letter-spacing: .08em; text-align: center; width: 15ch; max-width: 100%; padding: 8px 10px; border: 1px solid #8A6A44; border-radius: 3px; background: #FBF5E6; color: inherit; }
+.ticket input:focus-visible { outline: 2px solid var(--wax); outline-offset: 2px; }
+.ticket .fhint { width: 100%; text-align: center; min-height: 1.3em; margin: 0; }
+.ticket-ok { text-align: center; margin: 12px 0 4px; }

@@ -475,9 +475,35 @@ export function createCity(root, L, ctx) {
       <p class="bus-pdf"><button class="link" data-pdf2>Scarica il quaderno di Aosta (PDF)</button></p>
     </div>`;
     modal.querySelector('[data-yes]').focus();
-    modal.querySelector('[data-yes]').addEventListener('click', contact);
+    modal.querySelector('[data-yes]').addEventListener('click', ticket);
     modal.querySelector('[data-exit]').addEventListener('click', () => { modal.hidden = true; ctx.onClose(); });
     modal.querySelector('[data-pdf2]').addEventListener('click', async (e) => { const b = e.currentTarget; b.textContent = 'Preparo il quaderno…'; try { const m = await import('./pdf.js'); await m.makeNotebook(L, S); b.textContent = 'Quaderno scaricato'; } catch (err) { console.error(err); b.textContent = 'Riprova a scaricare il quaderno'; } });
+  }
+  function ticket() {
+    const acts = modal.querySelector('.bus-actions');
+    acts.outerHTML = `<form class="ticket" novalidate>
+        <label for="tk">Il tuo biglietto <span class="muted">· your ticket, 10 digits</span></label>
+        <input id="tk" inputmode="numeric" autocomplete="off" maxlength="14" placeholder="00000 00000">
+        <button class="btn wax">Sali</button>
+        <p class="fhint" aria-live="polite"></p>
+      </form>
+      <p class="small"><button class="link" data-write>Non hai un biglietto? Scrivimi</button> &nbsp;·&nbsp; <button class="link" data-exit2>Esci</button></p>`;
+    const f = modal.querySelector('.ticket'), inp = f.querySelector('input'), msg = f.querySelector('.fhint');
+    inp.focus();
+    modal.querySelector('[data-write]').addEventListener('click', contact);
+    modal.querySelector('[data-exit2]').addEventListener('click', () => { modal.hidden = true; ctx.onClose(); });
+    f.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = f.querySelector('button'); btn.disabled = true; msg.textContent = 'Controllo il biglietto…';
+      const { checkTicket } = await import('./ticket.js');
+      const ok = await checkTicket(inp.value).catch(() => false);
+      btn.disabled = false;
+      if (!ok) { msg.textContent = 'Questo biglietto non è valido: controlla le 10 cifre. · This ticket is not valid: check the 10 digits.'; inp.select(); return; }
+      S.ticket = true;
+      f.outerHTML = `<div class="ticket-ok"><p class="lead">Biglietto valido. Buon viaggio!</p>
+        <p>${esc(L.next)} si sta preparando: la diligenza partirà presto. Conserva il tuo biglietto.</p>
+        <p class="small muted">Valid ticket. ${esc(L.next)} is being prepared: the stagecoach will leave soon. Keep your ticket.</p></div>`;
+    });
   }
   function contact() {
     const sheet = modal.querySelector('.sheet');
